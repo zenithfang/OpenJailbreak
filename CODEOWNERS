@@ -1,0 +1,7 @@
+# Global code ownership - all files require approval from zenithfang
+* @zenithfang
+
+# Critical configuration files require extra scrutiny
+/.gitignore @zenithfang
+/pyproject.toml @zenithfang
+/src/autojailbreak/config.py @zenithfang
