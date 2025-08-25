@@ -11,17 +11,17 @@ OpenJailbreak v1.0.0 represents a complete, production-ready framework for autom
 Our systematic research uncovered critical vulnerabilities in LLM safety mechanisms:
 
 **🔍 QueryAttack - Structured Language Exploitation**
-- **Discovery**: Chain-of-Thought reasoning exposes internal safety bypass mechanisms
-- **Critical Finding**: Models actively rationalize harmful content as benign
-- **Example**: Transform harmful queries into C-like structures that bypass safety filters
+- **Mechanism**: Structured, code-like formats manipulate rule-following and parsing
+- **Critical Finding**: Models misclassify harmful content as benign under structured framing
+- **Example**: C-like templates with ICL formatting to bypass safety filters
 
 **🎭 Mousetrap - Chaos Transformation Attack**
 - **Novel Approach**: Multiple encoding layers (Caesar cipher, word reversal, ASCII conversion)
 - **Mechanism**: Models prioritize "solving" technical puzzles over safety evaluation
 
 **🎪 Additional Breakthrough Attacks**
-- **ABJ (Assumed Behavior Jailbreak)**: Exploits conversational coherence maintenance
-- **Wiki-Text Infilling**: Triggers text completion instincts
+- **ABJ (Analyzing-based Jailbreak)**: CoT exploitation via data transformation and iterative toxicity adjustment
+- **Wiki-Text-Infilling**: Academic framing with [MASK] infilling and wiki-context generation
 
 ## 🏗️ Framework Features
 
@@ -89,28 +89,21 @@ python examples/universal_attack.py \
     --model gpt-4o \
     --samples 5 \
     --query_attack_target_language C
-
-# List all available attacks  
-python examples/universal_attack.py --list_attacks
 ```
 
-### Research Usage
+### Research Usage (Programmatic)
 ```python
-from src.autojailbreak.attacks.query_attack import QueryAttack
-from src.autojailbreak.llm.litellm import LLMLiteLLM
+import src.autojailbreak as ajb
 
-# Initialize attack
-attack = QueryAttack()
+attack = ajb.AttackFactory.create_attack("abj")
+model = ajb.LLMLiteLLM.from_config(model_name="gpt-4o", provider="openai")
 
-# Generate attack payload
-payload = attack.generate_attack(
+attack_prompt = attack.generate_attack(
     prompt="Your test prompt",
-    goal="research_safety", 
+    goal="research_safety",
     target="target_model"
 )
-
-# Evaluate with multiple methods
-result = evaluator.assess_response(payload, response)
+response = model.query(attack_prompt)
 ```
 
 ## 🔒 Security & Ethics

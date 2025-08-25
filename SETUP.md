@@ -139,19 +139,22 @@ pip install tqdm colorama matplotlib
 ```bash
 # Basic functionality test
 python examples/universal_attack.py \
-    --attack_name simple_override \
+    --attack_name abj \
     --model gpt-4o \
     --samples 1 \
     --verbose
 
-# List all available attacks
-python examples/universal_attack.py --list_attacks
+# Reproduction scripts (from the writeup)
+./examples/scripts/test_abj_attack.sh
+./examples/scripts/test_mousetrap.sh
+./examples/scripts/test_query_attack.sh
+./examples/scripts/test_wiki_text_infilling.sh
 ```
 
 ### Test API Connections
 ```bash
 # Test your primary provider
-python examples/scripts/test_comprehensive.py --attack_name simple_override --samples 1
+python examples/scripts/test_comprehensive.py --attack_name abj --samples 1
 
 # Multi-provider test
 python tests/test_model_integration.py

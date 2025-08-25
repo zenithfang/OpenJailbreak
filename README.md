@@ -8,14 +8,13 @@ A comprehensive framework for automatic LLM jailbreak research with unified comm
 
 ## Overview
 
-OpenJailbreak provides a unified platform for researching and evaluating jailbreak attacks against Large Language Models (LLMs). The framework uses a **flattened registry-based architecture** with auto-discovery and embedded configuration for simplified attack development and usage.
+OpenJailbreak provides a unified platform for researching and evaluating jailbreak attacks against Large Language Models (LLMs). The framework uses a **flattened registry-based architecture** with auto-discovery and embedded configuration for simplified attack development and usage. This repository underpins our systematic red‑teaming methodology.
 
 **Key Features:**
 - **Flattened Architecture**: Registry-based system with auto-discovery of attacks
 - **Embedded Configuration**: Self-documenting attacks with built-in parameter definitions
 - **Universal Command-Line Interface**: Single script with automatic CLI generation
 - **Multiple Model Support**: OpenAI, Anthropic, Azure, Together AI, and local models
-- **Built-in Defenses**: Test robustness with integrated defense mechanisms
 - **Standardized Evaluation**: Automated assessment with multiple evaluation methods
 - **Research-Ready**: Reproducible experiments with comprehensive result tracking
 
@@ -28,9 +27,9 @@ pip install -e .
 # Set up API key (see SETUP.md for all providers)
 export OPENAI_API_KEY="your_key_here"
 
-# Run your first attack
+# Run your first attack (ABJ - Chain-of-Thought exploit)
 python examples/universal_attack.py \
-    --attack_name simple_override \
+    --attack_name abj \
     --model gpt-4o \
     --samples 3
 ```
@@ -39,15 +38,28 @@ python examples/universal_attack.py \
 
 | Attack | Description | Example |
 |--------|-------------|---------|
-| `simple_override` | Basic system prompt override | `--attack_name simple_override` |
-| `role_assignment` | Assign harmful role to model | `--attack_name role_assignment` |
-| `many_shot` | Many-shot in-context learning | `--attack_name many_shot` |
-| `pair` | Prompt Automatic Iterative Refinement | `--attack_name pair` |
+| `abj` | Analyzing-based Jailbreak (CoT exploitation) | `--attack_name abj_attack` |
+| `mousetrap` | Iterative chaos; reward hacking via decoding focus | `--attack_name mousetrap` |
+| `query_attack` | Structured/C-like query manipulation | `--attack_name query_attack` |
+| `wiki_text_infilling` | Academic framing with [MASK] infilling | `--attack_name wiki_text_infilling` |
 
 ```bash
-# View all available attacks
-python examples/universal_attack.py --list_attacks
+# Get help for a specific attack
+python examples/universal_attack.py --attack_name abj --help
 ```
+
+## Reproduction Scripts
+
+Reproduce the four core findings described in the writeup using ready-to-run scripts:
+
+```bash
+./examples/scripts/test_abj_attack.sh
+./examples/scripts/test_mousetrap.sh
+./examples/scripts/test_query_attack.sh
+./examples/scripts/test_wiki_text_infilling.sh
+```
+
+See details and context in the **[Kaggle Writeup](kaggle_writeup.md)**.
 
 ## Documentation
 
@@ -64,11 +76,8 @@ python examples/universal_attack.py --list_attacks
 # Show all available options
 python examples/universal_attack.py --help
 
-# List available attacks
-python examples/universal_attack.py --list_attacks
-
 # Get help for specific attack
-python examples/universal_attack.py --attack_name many_shot --help
+python examples/universal_attack.py --attack_name abj --help
 ```
 
 ## Contributing

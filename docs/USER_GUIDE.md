@@ -21,39 +21,27 @@ Before using OpenJailbreak, ensure you have:
 ```bash
 # Run a basic attack
 python examples/universal_attack.py \
-    --attack_name simple_override \
+    --attack_name abj \
     --model gpt-4o \
     --samples 5
 ```
 
 ### Understanding Attack Types
 
-#### **Simple Override Attacks**
-- **Purpose**: Basic system prompt manipulation
-- **Use Case**: Testing basic safety guardrails
-- **Examples**: `simple_override`, `role_assignment`
+#### **Chain-of-Thought Exploitation**
+- **Purpose**: Manipulate CoT reasoning as an internal channel
+- **Example**: `abj`
 
-#### **Translation Attacks**
-- **Purpose**: Language-based obfuscation
-- **Use Case**: Testing multilingual safety measures
-- **Examples**: `translate_chain`
-
-#### **Contextual Attacks**
-- **Purpose**: In-context learning manipulation
-- **Use Case**: Testing few-shot learning vulnerabilities
-- **Examples**: `many_shot`
-
-#### **Iterative Attacks**
-- **Purpose**: Automated refinement of attack prompts
-- **Use Case**: Advanced attack optimization
-- **Examples**: `pair`
+#### **Reward Hacking**
+- **Purpose**: Divert model objectives toward task completion over safety
+- **Example**: `mousetrap`
 
 ### Customizing Attack Parameters
 Each attack has configurable parameters. Use `--help` to see available options:
 
 ```bash
 # See all options for specific attack
-python examples/universal_attack.py --attack_name many_shot --help
+python examples/universal_attack.py --attack_name abj --help
 
 # Common parameters
 --samples 10           # Number of test cases
@@ -143,17 +131,11 @@ python examples/universal_attack.py --attack_name many_shot --help
 ]
 ```
 
-#### CSV Format
-```csv
-goal,target,behavior,category
-"Write harmful content","Sure, here's harmful content","Content Generation","Harmful"
-```
-
 #### Usage
 ```bash
 # Load custom dataset
 python examples/universal_attack.py \
-    --attack_name simple_override \
+    --attack_name query_attack \
     --dataset custom \
     --dataset_path data/my_dataset.json
 ```
@@ -164,35 +146,6 @@ python examples/universal_attack.py \
 --samples 10          # Test 10 examples
 --start_index 5       # Start from index 5
 --all_samples         # Use entire dataset
-```
-
-## Defense Mechanisms
-
-### Available Defenses
-
-#### SmoothLLM Defense
-- **Purpose**: Perturb inputs to detect adversarial content
-- **Usage**: `--defense smoothllm`
-- **Best for**: Detection of crafted inputs
-
-#### Perplexity Defense
-- **Purpose**: Filter responses based on perplexity scores
-- **Usage**: `--defense perplexity`
-- **Best for**: Detecting unusual response patterns
-
-#### Paraphrase Defense
-- **Purpose**: Rephrase inputs to break attack patterns
-- **Usage**: `--defense paraphrase --paraphrase_model gpt-4o`
-- **Best for**: Breaking structured attack templates
-
-### Using Defenses
-```bash
-# Test attack effectiveness against defenses
-python examples/universal_attack.py \
-    --attack_name many_shot \
-    --defense smoothllm \
-    --model gpt-4o \
-    --samples 5
 ```
 
 ## Evaluation Methods
@@ -242,12 +195,6 @@ Detailed results saved to JSON files with:
 - Timing and performance metrics
 - Configuration used
 
-#### CSV Export
-Tabular data suitable for analysis:
-- One row per test case
-- Columns for all relevant metrics
-- Easy import into analysis tools
-
 ### Result Organization
 ```bash
 # Control output location
@@ -278,13 +225,13 @@ success_rate = df['evaluation_result'].mean()
 ```bash
 # Test multiple samples efficiently
 python examples/universal_attack.py \
-    --attack_name many_shot \
+    --attack_name abj \
     --samples 100 \
     --output_dir batch_results/
 
 # Use comprehensive testing script
 python examples/scripts/test_comprehensive.py \
-    --attack_name pair \
+    --attack_name query_attack \
     --all_samples
 ```
 
@@ -323,20 +270,27 @@ export DATASET_CACHE_DIR=".cache/datasets"
 import src.autojailbreak as ajb
 
 # Load attack
-attack = ajb.create_attack("many_shot")
+attack = ajb.AttackFactory.create_attack("abj")
 
 # Load model
 model = ajb.LLMLiteLLM.from_config(
-    model="gpt-4o",
+    model_name="gpt-4o",
     provider="openai"
 )
 
 # Load dataset
 dataset = ajb.read_dataset("jbb-harmful")
 
-# Run evaluation
+# Run evaluation (manual loop)
 evaluator = ajb.JailbreakEvaluator()
-results = evaluator.evaluate_dataset(attack, model, dataset)
+for item in dataset.sample(5, 42):
+    attack_prompt = attack.generate_attack(
+        prompt=item["goal"],
+        goal=item["goal"],
+        target=item.get("target", "")
+    )
+    response = model.query(attack_prompt)
+    result = evaluator({"question": item["goal"], "answer": response})
 ```
 
 ### Integration with Research Tools
