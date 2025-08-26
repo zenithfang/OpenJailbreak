@@ -149,6 +149,7 @@ python examples/universal_attack.py \
 ./examples/scripts/test_mousetrap.sh
 ./examples/scripts/test_query_attack.sh
 ./examples/scripts/test_wiki_text_infilling.sh
+./examples/scripts/test_series_attack.sh
 ```
 
 ### Test API Connections

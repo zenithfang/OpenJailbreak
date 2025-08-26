@@ -10,7 +10,7 @@ PROVIDER="wenwen"
 EVAL_MODEL="gpt-4o"
 EVAL_PROVIDER="wenwen"
 DATASET="harmful"
-SAMPLES=1
+SAMPLES=100
 OUTPUT_DIR="results/test_mousetrap_$(date +%Y%m%d_%H%M%S)"
 
 # Mousetrap specific parameters

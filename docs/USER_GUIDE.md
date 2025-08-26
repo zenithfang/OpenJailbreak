@@ -327,3 +327,36 @@ def run_experiment(attack_name, model_config, samples):
 ---
 
 *For setup and installation, see [SETUP.md](../SETUP.md). For contributing, see [CONTRIBUTING.md](../CONTRIBUTING.md).*
+ 
+## Series/Compositional Attacks
+
+### When to Use
+- To test whether chaining simple transformations (e.g., tense shift + translation) is more effective than single-step attacks.
+
+### How It Works
+- The series runner executes a list of components sequentially. The output of step N becomes the input of step N+1. The final prompt is sent to the target model and evaluated automatically.
+
+### Quick Start
+```bash
+python examples/universal_attack_series.py \
+  --config_file assets/series_configs/series_simple.json \
+  --model gpt-4o \
+  --provider openai \
+  --samples 3
+```
+
+Or specify the chain inline:
+```bash
+python examples/universal_attack_series.py \
+  --attack_chain "past_tense_attack,translate_chain" \
+  --model gpt-4o --provider openai
+```
+
+### Caveats
+- Non‑ASCII text: translation-based chains require UTF‑8/Unicode-capable shells and fonts.
+- API keys: you need keys for both the target model provider and the evaluation provider (e.g., OpenAI for `--eval_provider openai`).
+
+### Reproduce the Compositional Finding
+```bash
+./examples/scripts/test_series_attack.sh
+```

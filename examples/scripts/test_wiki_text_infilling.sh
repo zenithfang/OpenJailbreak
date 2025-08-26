@@ -15,7 +15,7 @@ PROVIDER="openai"
 EVAL_MODEL="gpt-4o"
 EVAL_PROVIDER="openai"
 DATASET="harmful"
-SAMPLES=3
+SAMPLES=100
 OUTPUT_DIR="results/test_wiki_text_infilling_$(date +%Y%m%d_%H%M%S)"
 
 # Wiki-Text-Infilling specific parameters with defaults

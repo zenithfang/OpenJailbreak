@@ -332,3 +332,53 @@ python examples/universal_attack.py --attack_name ATTACK --verbose
 ---
 
 *This reference reflects the current flattened architecture with auto-discovery and embedded configuration.* 
+
+## Series Runner CLI
+
+Run compositional attacks by chaining multiple components.
+
+### Usage
+```bash
+python examples/universal_attack_series.py [OPTIONS]
+```
+
+### Core Options
+- `--config_file PATH` – Series config JSON file
+- `--attack_chain LIST` – Comma-separated chain, e.g., `past_tense_attack,translate_chain`
+- `--model MODEL` – Target model (default: `gpt-3.5-turbo`)
+- `--provider PROVIDER` – Target provider (default: `wenwen`)
+- `--api_key KEY` – Provider API key (optional if env var set)
+- `--api_base URL` – Provider base URL
+- `--dataset NAME` – Dataset (default: `harmful` ≈ `jbb-harmful`)
+- `--samples N` – Number of samples (default: `5`)
+- `--all_samples` – Use entire dataset
+- `--seed N` – Random seed (default: `42`)
+- `--eval_provider PROVIDER` – Evaluation provider (default: `openai`)
+- `--eval_model MODEL` – Evaluation model (default: `gpt-4o`)
+- `--output_dir DIR` – Output directory (default: `results`)
+- `--output PATH` – Output file path (overrides auto-naming)
+- `--resume` – Resume appending to an existing results file
+- `--max_workers N` – Parallel workers (default: `1`)
+- `--verbose` – Verbose logging
+- `--dry_run` – Do not execute attacks; simulate
+- `--continue_on_error` – Continue chain on step failure
+- `--max_retry_attempts N` – Retry per step (default: `2`)
+
+### Notes
+- Auto evaluator selection for datasets:
+  - `gsm8k`, `gsm8k-evil` → GSM8K-Hybrid evaluator
+  - `wmdp-*` → WMDP-Hybrid evaluator
+- Results JSON includes `metadata.success_rate` and per-example details.
+
+### Series Components
+Usable in chains (distinct from single attacks listed above):
+- `past_tense_attack`
+- `translate_chain`
+
+Example:
+```bash
+python examples/universal_attack_series.py \
+  --attack_chain "past_tense_attack,translate_chain" \
+  --model gpt-4o --provider openai \
+  --samples 3 --verbose
+```

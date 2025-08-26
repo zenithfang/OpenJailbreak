@@ -14,7 +14,7 @@ PROVIDER="infini"
 EVAL_MODEL="gpt-4o"
 EVAL_PROVIDER="openai"
 DATASET="harmful"
-SAMPLES=50
+SAMPLES=100
 OUTPUT_DIR="results/test_series_attack_$(date +%Y%m%d_%H%M%S)"
 
 echo "Configuration:"

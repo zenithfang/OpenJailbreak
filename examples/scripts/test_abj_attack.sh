@@ -9,7 +9,7 @@ PROVIDER="wenwen"
 EVAL_MODEL="gpt-4o"
 EVAL_PROVIDER="wenwen"
 DATASET="harmful"
-SAMPLES=1
+SAMPLES=100
 OUTPUT_DIR="results/test_abj_$(date +%Y%m%d_%H%M%S)"
 
 # ABJ specific parameters

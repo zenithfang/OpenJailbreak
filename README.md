@@ -48,18 +48,41 @@ python examples/universal_attack.py \
 python examples/universal_attack.py --attack_name abj --help
 ```
 
+## Series (Compositional) Attacks
+
+Compose multiple attacks sequentially using the series runner. This enables combinations like past‑tense reformulation followed by cross‑lingual translation.
+
+- Script: `examples/universal_attack_series.py`
+- Example config: `assets/series_configs/series_simple.json`
+
+```bash
+# Example: run a simple series chain (past_tense_attack -> translate_chain)
+python examples/universal_attack_series.py \
+    --config_file assets/series_configs/series_simple.json \
+    --model gpt-4o \
+    --provider openai \
+    --samples 3
+```
+
 ## Reproduction Scripts
 
-Reproduce the four core findings described in the writeup using ready-to-run scripts:
+Reproduce the findings described in the writeup (including the new compositional series finding) using ready-to-run scripts:
 
 ```bash
 ./examples/scripts/test_abj_attack.sh
 ./examples/scripts/test_mousetrap.sh
 ./examples/scripts/test_query_attack.sh
 ./examples/scripts/test_wiki_text_infilling.sh
+./examples/scripts/test_series_attack.sh
 ```
 
 See details and context in the **[Kaggle Writeup](kaggle_writeup.md)**.
+
+### New Finding: Compositional Safety Evasion (Past‑Tense + Translate Chain)
+
+- Summary: A series attack that first reframes prompts in the past tense and then applies a cross‑lingual translation chain can increase policy‑violating response rates compared to either technique alone.
+- Results JSON: `findings/findings_series_past_tense_translate_chain.json`
+- Reproduce: run `./examples/scripts/test_series_attack.sh` or use the series runner example above with `assets/series_configs/series_simple.json`.
 
 ## Documentation
 

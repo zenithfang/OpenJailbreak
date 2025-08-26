@@ -171,6 +171,31 @@ python examples/universal_attack.py --help
 python examples/universal_attack.py --attack_name abj --help
 ```
 
+## Series (Compositional) Examples
+
+### Config-Based Chain
+```bash
+python examples/universal_attack_series.py \
+  --config_file assets/series_configs/series_simple.json \
+  --model gpt-4o \
+  --provider openai \
+  --samples 3 \
+  --verbose
+```
+
+### CLI Chain
+```bash
+python examples/universal_attack_series.py \
+  --attack_chain "past_tense_attack,translate_chain" \
+  --model gpt-4o \
+  --provider openai \
+  --samples 3
+```
+
+### Tips
+- Use `--resume` to append to an existing results file
+- Increase `--max_workers` for parallelism when provider limits allow
+
 ---
 
 *For detailed CLI documentation, see [CLI_REFERENCE.md](CLI_REFERENCE.md). For development guides, see [DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md).* 

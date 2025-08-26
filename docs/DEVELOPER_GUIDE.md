@@ -392,3 +392,40 @@ PARAMETERS = {...}
 ---
 
 *For setup instructions, see [SETUP.md](../SETUP.md). For usage examples, see [EXAMPLES.md](EXAMPLES.md).*
+ 
+## Composability for Series Runner
+
+### Contract for Series-Compatible Attacks
+- Implement `generate_attack(self, prompt: str, goal: str, target: str, **kwargs)`
+- Return type: `str` or `List[str]` (the series runner accepts both; lists use the first item by default)
+- Maintain the three required attributes so parameters are exposed via CLI:
+  - `NAME` (unique, lowercase with underscores)
+  - `PAPER` (reference string)
+  - `PARAMETERS` (dict of `AttackParameter` entries)
+
+### Making Parameters CLI-Exposable
+- Ensure each parameter includes a `cli_arg` so it can be configured when chained
+- Validate inputs with `choices`, `required`, or `validator` where appropriate
+
+### Series Configuration Schema
+Minimal JSON used by the series runner:
+```json
+{
+  "attack_chain": [
+    { "name": "past_tense_attack", "parameters": {} },
+    { "name": "translate_chain", "parameters": {} }
+  ],
+  "metadata": {
+    "created_by": "AutoJailbreak Series Attack Framework",
+    "version": "1.0"
+  }
+}
+```
+
+- Example config: `assets/series_configs/series_simple.json`
+- Each `parameters` block is merged with CLI args at execution time
+
+### Local Testing Tips
+- Use a small sample size (e.g., `--samples 2`) during development
+- Ensure UTF‑8/Unicode locale for translation-based components
+- Combine with `--verbose` and `--resume` to iterate quickly
