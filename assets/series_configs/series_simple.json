@@ -1,0 +1,21 @@
+{
+  "description": "Simple chained attack configuration - simple overwrite + translation attack",
+  "attack_chain": [
+    {
+      "name": "past_tense_attack",
+      "parameters": {
+      }
+    },
+    {
+      "name": "translate_chain", 
+      "parameters": {
+      }
+    }
+  ],
+  "metadata": {
+    "created_by": "AutoJailbreak Series Attack Framework",
+    "version": "1.0",
+    "purpose": "Demonstrate how to combine a simple overwrite with a translation attack",
+    "expected_effectiveness": "Medium - overwrite attack breaks safety mechanisms; translation attack bypasses language-specific filters"
+  }
+}
