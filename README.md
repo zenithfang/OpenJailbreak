@@ -14,7 +14,7 @@ OpenJailbreak provides a unified platform for researching and evaluating jailbre
 - **Flattened Architecture**: Registry-based system with auto-discovery of attacks
 - **Embedded Configuration**: Self-documenting attacks with built-in parameter definitions
 - **Universal Command-Line Interface**: Single script with automatic CLI generation
-- **Multiple Model Support**: OpenAI, Anthropic, Azure, Together AI, and local models
+- **Multiple Model Support**: OpenAI, Anthropic, Azure, Aliyun, Wenwen, Infini, Vertex AI, AWS Bedrock, and local models
 - **Standardized Evaluation**: Automated assessment with multiple evaluation methods
 - **Research-Ready**: Reproducible experiments with comprehensive result tracking
 
@@ -38,7 +38,7 @@ python examples/universal_attack.py \
 
 | Attack | Description | Example |
 |--------|-------------|---------|
-| `abj` | Analyzing-based Jailbreak (CoT exploitation) | `--attack_name abj_attack` |
+| `abj` | Analyzing-based Jailbreak (CoT exploitation) | `--attack_name abj` |
 | `mousetrap` | Iterative chaos; reward hacking via decoding focus | `--attack_name mousetrap` |
 | `query_attack` | Structured/C-like query manipulation | `--attack_name query_attack` |
 | `wiki_text_infilling` | Academic framing with [MASK] infilling | `--attack_name wiki_text_infilling` |

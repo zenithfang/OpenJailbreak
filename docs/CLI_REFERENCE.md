@@ -35,7 +35,7 @@ python examples/universal_attack.py --attack_name ATTACK --model MODEL [OPTIONS]
 
 - `--provider PROVIDER`
   - **Description**: Model provider
-  - **Options**: `openai`, `anthropic`, `azure`, `bedrock`, `vertex_ai`, `aliyun`, `wenwen`, `local`
+  - **Options**: `openai`, `anthropic`, `azure`, `bedrock`, `vertex_ai`, `aliyun`, `wenwen`, `infini`, `local`
   - **Default**: `openai`
 
 - `--api_key KEY`
@@ -96,16 +96,6 @@ python examples/universal_attack.py --attack_name ATTACK --model MODEL [OPTIONS]
 - `--wiki_max_wiki_retries N`
 - `--wiki_max_tokens N`
 - `--wiki_no_cache {true,false}`
-
-## Defense Configuration
-- `--defense DEFENSE`
-  - **Description**: Defense mechanism to apply
-  - **Options**: `smoothllm`, `perplexity`, `paraphrase`
-  - **Default**: None
-
-- `--paraphrase_model MODEL`
-  - **Description**: Model for paraphrase defense
-  - **Default**: `gpt-4o`
 
 ## Evaluation Settings
 - `--eval_model MODEL`
@@ -232,17 +222,9 @@ python examples/universal_attack.py \
 
 ### External File Usage
 ```bash
-# Many-shot with external examples
-python examples/universal_attack.py \
-    --attack_name many_shot \
-    --examples_file data/research_examples.txt \
-    --num_examples 12 \
-    --model gpt-4o \
-    --samples 3
-
 # Custom dataset
 python examples/universal_attack.py \
-    --attack_name sata_academic \
+    --attack_name query_attack \
     --dataset custom \
     --dataset_path data/custom_prompts.json \
     --model claude-3-opus-20240229 \
